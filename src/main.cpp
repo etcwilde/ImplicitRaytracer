@@ -1,5 +1,7 @@
 #include "ImplicitSystem.hpp"
 #include "vecHelp.hpp"
+
+#include "Image.hpp"
 #include <glm/glm.hpp>
 int main()
 {
@@ -14,5 +16,16 @@ int main()
 	t.Curvature(t.GetStartVertex(), k1, k2);
 	std::cout << "Curvatures: " << k1 << ", " << k2 << '\n';
 
+	Image image(100, 100);
+
+	for (unsigned int x = 0; x < 100; x++)
+	{
+		for (unsigned int y = 0; y < 100; y++)
+		{
+			image.set(x, y, glm::vec3(0.5, 0.2, 0.1));
+		}
+	}
+
+	image.save("output.ppm");
 	return 0;
 }
