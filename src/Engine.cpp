@@ -82,9 +82,18 @@ bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color
 {
 	float d;
 	const glm::vec3 proj = ProjectRay(R, O, d);
-	if (!f_equ(O->Evaluate(proj), 0, 0.005f))
-		return false;
-	color = glm::vec3(1, 1, 1);
+
+	const glm::vec3 n = glm::normalize(glm::abs(O->Normal(proj)));
+
+	if (f_equ(O->Evaluate(proj), 0, 0.005f))
+		color = n;
+	else
+		color = glm::abs(n * (float)1/O->Evaluate(proj));
+
+
+
+
+	//color = glm::vec3(1, 1, 1);
 	return true;
 }
 
