@@ -2,7 +2,7 @@
 #define ENGINE_HPP
 
 #include "Image.hpp"
-#include "ImplicitSystem.hpp"
+#include "implicit/ImplicitSystem.hpp"
 #include "floatlibs.hpp"
 #include "vecHelp.hpp"
 

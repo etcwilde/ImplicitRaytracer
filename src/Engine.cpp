@@ -80,20 +80,17 @@ Ray RayTracer::ComputeEyeRay(double x, double y, unsigned int width,
 
 bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color, float& distance)
 {
-	float d;
-	const glm::vec3 proj = ProjectRay(R, O, d);
 
-	const glm::vec3 n = glm::normalize(glm::abs(O->Normal(proj)));
-
-	if (f_equ(O->Evaluate(proj), 0, 0.005f))
-		color = n;
-	else
-		color = glm::abs(n * (float)1/O->Evaluate(proj));
-
-
-
-
-	//color = glm::vec3(1, 1, 1);
+	const float eps = 0.00001;
+	const float min_step = 0.00001;
+	float d, dt;
+	glm::vec3 proj = ProjectRay(R, O, d);
+	if (!f_equ(O->Evaluate(proj), 0, eps))
+	{
+		dt = O->DistanceFromSurface(proj);
+		if (dt > eps) return false;
+	}
+	color = glm::abs(O->Normal(proj));
 	return true;
 }
 
@@ -116,6 +113,11 @@ glm::vec3 RayTracer::ProjectRay(const Ray& R, Implicit::Object* O, float& d)
 			break;
 		}
 		xi2 = xi1; xi1 = xi;
+		if (i == 99)
+		{
+			d = INFINITY;
+			return start;
+		}
 	}
 	return start + direction * d;
 }

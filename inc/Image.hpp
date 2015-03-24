@@ -20,6 +20,8 @@ public:
 	void set(unsigned int x, unsigned int y, const glm::vec3& value);
 	const glm::vec3& get(unsigned int x, unsigned int y) const;
 
+	void blur();
+
 	void save(const std::string& filename) const;
 private:
 	unsigned int m_width;
