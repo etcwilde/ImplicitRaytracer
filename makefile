@@ -3,8 +3,6 @@
 #
 # LIBS
 # pthread  	Threading
-# GL		OpenGl
-# glfw		glfw -- Maybe don't need
 #
 # Flags
 # march=native
@@ -43,7 +41,7 @@ D_DOCS	= docs/
 
 # Flags
 CFLAGS	= -c -iquote $(D_INC) -march=native -mfpmath=sse
-LIBS	= -pthread -lGL -lglfw lib/libImplicit.a
+LIBS	= -pthread lib/libImplicit.a
 CXFLAGS = $(CFLAGS) -std=c++11
 
 # Generate Object file names

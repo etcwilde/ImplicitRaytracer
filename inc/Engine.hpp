@@ -3,7 +3,7 @@
 
 #include "Image.hpp"
 #include "implicit/ImplicitSystem.hpp"
-#include "floatlibs.hpp"
+#include "implicit/floatlibs.hpp"
 #include "vecHelp.hpp"
 
 #include <list>
