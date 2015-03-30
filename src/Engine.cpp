@@ -52,7 +52,7 @@ void RayTracer::trace(Implicit::Object* obj, unsigned int x0, unsigned int x1,
 		m_y_mux.unlock();
 
 
-		progressBar(y, y1, 10, 50);
+		//progressBar(y, y1, 10, 50);
 
 		for (unsigned int x = x0; x < x1; ++x)
 		{
@@ -84,17 +84,34 @@ bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color
 	const float eps = 0.00001;
 	const float min_step = 0.00001;
 	float d, dt;
-	glm::vec3 proj = ProjectRay(R, O, d);
+	/*glm::vec3 proj = ProjectRay(R, O, d);
 	if (!f_equ(O->Evaluate(proj), 0, eps))
 	{
 		dt = O->DistanceFromSurface(proj);
 		if (dt > eps) return false;
 	}
-	color = glm::abs(O->Normal(proj));
-	return true;
+	color = glm::abs(O->Normal(proj));  */
+	glm::vec3 proj;
+	if (!O->Intersect(R.m_origin, R.m_direction, proj))
+	{
+		return false;
+	}
+	if (f_equ(O->Evaluate(proj), 0, eps))
+	{
+		color = glm::abs(O->Normal(proj));
+		return true;
+	}
+	proj = O->Project(proj, R.m_direction);
+	if (f_equ(O->Evaluate(proj), 0, eps))
+	{
+		color = glm::abs(O->Normal(proj));
+		return true;
+	}
+	return false;
+
 }
 
-glm::vec3 RayTracer::ProjectRay(const Ray& R, Implicit::Object* O, float& d)
+/*glm::vec3 RayTracer::ProjectRay(const Ray& R, Implicit::Object* O, float& d)
 {
 	register float xi;
 	float xi1 = 0;
@@ -120,4 +137,4 @@ glm::vec3 RayTracer::ProjectRay(const Ray& R, Implicit::Object* O, float& d)
 		}
 	}
 	return start + direction * d;
-}
+} */
