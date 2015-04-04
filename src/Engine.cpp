@@ -82,25 +82,16 @@ bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color
 {
 
 	const float eps = 0.00001;
-	const float min_step = 0.00001;
-	float d, dt;
-	/*glm::vec3 proj = ProjectRay(R, O, d);
-	if (!f_equ(O->Evaluate(proj), 0, eps))
-	{
-		dt = O->DistanceFromSurface(proj);
-		if (dt > eps) return false;
-	}
-	color = glm::abs(O->Normal(proj));  */
 	glm::vec3 proj;
 	if (!O->Intersect(R.m_origin, R.m_direction, proj))
 	{
 		return false;
 	}
-	if (f_equ(O->Evaluate(proj), 0, eps))
+	/*if (f_equ(O->Evaluate(proj), 0, eps))
 	{
 		color = glm::abs(O->Normal(proj));
 		return true;
-	}
+	} */
 	proj = O->Project(proj, R.m_direction);
 	if (f_equ(O->Evaluate(proj), 0, eps))
 	{
@@ -110,31 +101,3 @@ bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color
 	return false;
 
 }
-
-/*glm::vec3 RayTracer::ProjectRay(const Ray& R, Implicit::Object* O, float& d)
-{
-	register float xi;
-	float xi1 = 0;
-	float xi2 = 1;
-	glm::vec3 start = R.m_origin;
-	glm::vec3 direction = R.m_direction;
-
-	for (unsigned int i = 0; i < 100; ++i)
-	{
-		float fxi1 = O->Evaluate( start + (direction * xi1));
-		float fxi2 = O->Evaluate( start + (direction * xi2));
-		xi = xi1 - fxi1 * ((xi1 - xi2)/(fxi1 - fxi2));
-		if (fxi1 == fxi2)
-		{
-			d = xi1;
-			break;
-		}
-		xi2 = xi1; xi1 = xi;
-		if (i == 99)
-		{
-			d = INFINITY;
-			return start;
-		}
-	}
-	return start + direction * d;
-} */
