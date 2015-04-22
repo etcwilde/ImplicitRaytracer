@@ -25,14 +25,11 @@ void RayTracer::Trace(unsigned int x0, unsigned int x1, unsigned int y0,
 	for (std::list<std::thread>::iterator it = thread_list.begin();
 			it != thread_list.end(); it++)
 		it->join();
-
-
 }
 
 void RayTracer::trace(Implicit::Object* obj, unsigned int x0, unsigned int x1,
 		unsigned int y0, unsigned int y1)
 {
-
 	m_y_mux.try_lock();
 	m_current_y = y0;
 	m_y_mux.unlock();
@@ -41,19 +38,14 @@ void RayTracer::trace(Implicit::Object* obj, unsigned int x0, unsigned int x1,
 	{
 		m_y_mux.lock();
 		y = m_current_y;
-		m_current_y += 1; // THIS MAY CAUSE A SEGFAULT -- CHECK IT
+		m_current_y += 1;
 		if (m_current_y >= y1)
 		{
-
 			m_y_mux.unlock();
-
 			break;
 		}
 		m_y_mux.unlock();
-
-
 		//progressBar(y, y1, 10, 50);
-
 		for (unsigned int x = x0; x < x1; ++x)
 		{
 			float distance = INFINITY;
@@ -63,7 +55,6 @@ void RayTracer::trace(Implicit::Object* obj, unsigned int x0, unsigned int x1,
 			if (SampleObject(R, obj, color, distance))
 				m_image->set(x, y, color);
 		}
-
 	}
 }
 
@@ -80,24 +71,11 @@ Ray RayTracer::ComputeEyeRay(double x, double y, unsigned int width,
 
 bool RayTracer::SampleObject(const Ray& R, Implicit::Object* O, glm::vec3& color, float& distance)
 {
-
-	const float eps = 0.00001;
+	const float eps = 0.000001;
 	glm::vec3 proj;
-	if (!O->Intersect(R.m_origin, R.m_direction, proj))
-	{
-		return false;
-	}
-	/*if (f_equ(O->Evaluate(proj), 0, eps))
-	{
-		color = glm::abs(O->Normal(proj));
-		return true;
-	} */
+	if (!O->Intersect(R.m_origin, R.m_direction, proj)) return false;
 	proj = O->Project(proj, R.m_direction);
-	if (f_equ(O->Evaluate(proj), 0, eps))
-	{
-		color = glm::abs(O->Normal(proj));
-		return true;
-	}
-	return false;
-
+	if (!f_equ(O->Evaluate(proj), 0, eps)) return false;
+	color = glm::abs(O->Normal(proj));
+	return true;
 }
