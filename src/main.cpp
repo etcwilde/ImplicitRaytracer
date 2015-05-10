@@ -10,11 +10,11 @@
 #include <glm/glm.hpp>
 int main()
 {
-	Implicit::Primitive p(geoffFunction, 0.5, 1);
-	Implicit::Translate t1(&p, 0, -0.2, 0);
-	Implicit::Translate t2(&p, 0, 0.2, 0);
-	Implicit::Translate t3(&p, -0.8, 0, 0);
-	Implicit::Translate t4(&p, 0.8, 0, 0);
+	Implicit::Sphere s(geoffFunction, 0.5, 1);
+	Implicit::Translate t1(&s, 0, -0.2, 0);
+	Implicit::Translate t2(&s, 0, 0.2, 0);
+	Implicit::Translate t3(&s, -0.8, 0, 0);
+	Implicit::Translate t4(&s, 0.8, 0, 0);
 
 	Implicit::Union u1(&t3, &t4);
 
